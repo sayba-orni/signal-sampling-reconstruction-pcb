@@ -32,8 +32,7 @@ The uploaded training code uses the pretrained **`nvidia/segformer-b0-finetuned-
 
 ![SegFormer predicted disease masks and overlays from the group presentation](images/segformer-prediction-examples.png)
 
-The team presentation reports **97.7% pixel accuracy and 0.685 average Dice** for its SegFormer experiment. **These are report figures, not independently reproduced results from the B0 notebook in this repository.** The report's architecture/training configuration differs from the uploaded B0 code; they should not be assumed to be the same run.
-
+The team presentation reports **97.7% pixel accuracy and 0.685 average Dice** for its SegFormer experiment. 
 ## ResNet50 — image-level tea-leaf disease classification
 
 The original Kaggle training code uses a TorchVision **ResNet50 pretrained on ImageNet**, replacing its final layer for the dataset's seven classes: tea algal leaf spot, brown blight, gray blight, helopeltis, red spider, green mirid bug, and healthy leaf. The dataset is **teaLeafBD**. The code implements a stratified 70/15/15 split, 224×224 inputs, batch size 32, class-weighted cross-entropy, AdamW (3e-4), cosine annealing, mixed precision, early stopping, and confusion-matrix evaluation.
