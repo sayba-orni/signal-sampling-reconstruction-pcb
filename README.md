@@ -1,68 +1,76 @@
+
 # Signal Sampling and Reconstruction — Custom PCB
 
-**EEE 310 Communication Laboratory | BUET | 2024**  
-**My contribution:** PCB design, hardware implementation, equipment procurement, cost management, and report writing.  
-**Project type:** Seven-member team laboratory project.
-
-![Fabricated and assembled sampling PCB](images/pcb.jpg)
 
 ## Overview
 
-This project demonstrates **natural sampling**, **flat-top sampling**, and **analog signal reconstruction**. Our team explored MOSFET-based sampling on breadboards and an LF398 sample-and-hold approach on a custom PCB. I designed the PCB in **Altium Designer** and contributed to its hardware implementation.
+This project involved designing and implementing a PCB for natural sampling, flat-top sampling, and reconstruction of analog signals.
 
-The PCB integrates a **555 timer clock generator**, **LF398 sampling ICs**, a **passive low-pass reconstruction filter**, and connectors/switches for choosing clock and DC-bias sources. Outputs are exposed for oscilloscope inspection.
+The circuit uses a 555 timer for clock generation, LF398 sample-and-hold ICs for sampling, and a passive RC low-pass filter for signal reconstruction. The PCB was designed in Altium Designer and tested using laboratory equipment.
 
-## PCB design and implementation
+MOSFET-based sampling circuits were also implemented on breadboards to compare their performance with the LF398-based circuit.
 
-| Fabricated PCB | 3D PCB layout |
-|---|---|
-| ![Assembled PCB](images/pcb.jpg) | ![Altium 3D layout](images/sampler_pcb.jpg) |
+## PCB Design
 
-### Schematic
+The PCB includes the clock generation circuit, sampling stages, reconstruction filter, and connectors for external signal inputs and outputs. Switches were included to select between different clock and DC-bias sources.
 
-![Circuit schematic](images/sampler_schematc.jpg)
+| Fabricated PCB | 3D PCB Design |
+| -------------- | ------------- |
+| ![Fabricated PCB](images/pcb.jpg) | ![PCB 3D View](images/sampler_pcb.jpg) |
 
-The images below include a second uploaded PCB render of the same design:
+### Circuit Schematic
 
-![Additional board view](images/samplerschematic.jpg)
+![Circuit Schematic](images/sampler_schematc.jpg)
 
-## Circuit blocks
+## Circuit Implementation
 
-1. **Clock generation:** 555 timer in astable mode, with an approximately **13.875 kHz** design frequency according to the project report. An external lab clock can also be selected.
-2. **Sampling:** LF398 sample-and-hold ICs used to demonstrate natural and flat-top sampling; the team also evaluated MOSFET-based sampling on breadboards.
-3. **Reconstruction:** A two-stage passive RC low-pass network, using **220 Ω** resistors and **1 µF** capacitors in the reported design.
-4. **Instrumentation:** Test connections for clock, sampled outputs, and reconstructed output, along with selectable supply/bias arrangements.
+### 1. Clock Generation
 
-The project report notes that the MOSFET flat-top implementation distorted the negative portion of the signal, motivating the LF398-based PCB implementation.
+A 555 timer IC was configured in astable mode to generate a clock signal of approximately 13.875 kHz. The circuit also supports an external clock source.
 
-## Experimental demonstration
+### 2. Signal Sampling
 
-![Oscilloscope measurement](images/signal.jpg)
+LF398 sample-and-hold ICs were used to implement natural and flat-top sampling. MOSFET-based sampling circuits were also tested separately on breadboards.
 
-In the team's laboratory report, a **1.0178 kHz** sinusoidal input and approximately **1.021 kHz** reconstructed output were recorded. The report describes the PCB implementation as providing more stable sampled waveforms than the breadboard implementation. These are **reported laboratory observations**, not a new independent characterization.
+### 3. Signal Reconstruction
 
-## Tools and topics
+A second-order passive RC low-pass filter was used to reconstruct the sampled signal. The filter was implemented using two 220 Ω resistors and two 1 µF capacitors.
 
-- **PCB design:** Altium Designer
-- **Analog electronics:** 555 timer, LF398 sample-and-hold ICs, RC low-pass filtering
-- **Signal processing:** Nyquist sampling criterion, natural sampling, flat-top sampling, reconstruction
-- **Validation:** Oscilloscope measurements and laboratory hardware tests
+### 4. PCB Testing
 
-## My role and team credit
+The fabricated PCB was tested using a function generator, DC power supply, and oscilloscope. The clock signal, sampled waveforms, and reconstructed output were observed during testing.
 
-I was responsible for **PCB design** and also contributed to **hardware implementation, purchasing equipment, cost management, and writing the report**. The circuit design, simulation, debugging, theoretical analysis, and other aspects of the complete laboratory project were collaborative work by the seven-member EEE 310 group at BUET (2024).
+## Experimental Results
 
-## Repository contents
+![Oscilloscope Output](images/signal.jpg)
+
+The experiments showed that:
+
+- Natural sampling was demonstrated using both MOSFET and LF398 circuits.
+- The MOSFET-based flat-top sampling circuit showed distortion in the negative half-cycle.
+- The LF398-based PCB produced the expected flat-top sampled waveform in both positive and negative half-cycles.
+- The reconstructed signal had a measured frequency of approximately 1.021 kHz for an input signal of approximately 1.018 kHz.
+
+## Tools and Components
+
+- **PCB Design:** Altium Designer
+- **Clock Generation:** 555 Timer IC
+- **Sampling:** LF398 Sample-and-Hold IC, MOSFET
+- **Signal Reconstruction:** Passive RC Low-Pass Filter
+- **Testing:** Oscilloscope, Function Generator, DC Power Supply
+
+## Project Files
 
 ```text
 signal-sampling-reconstruction-pcb/
 ├── README.md
+├── sampler.PcbDoc
+├── sampler.SchDoc
 └── images/
-    ├── pcb.jpg                 # Fabricated and assembled board
-    ├── sampler_pcb.jpg         # 3D PCB layout
-    ├── sampler_schematc.jpg    # Schematic
-    ├── samplerschematic.jpg    # Additional 3D board render
-    └── signal.jpg              # Oscilloscope demonstration
+    ├── pcb.jpg
+    ├── sampler_pcb.jpg
+    ├── sampler_schematc.jpg
+    └── signal.jpg
 ```
 
-> **Note:** The supplied images document the design and tests. Native Altium project files are not included because they were not provided. The original group report is also not included to avoid publishing classmates' student IDs and signatures without review.
+The Altium Designer files contain the PCB layout and circuit schematic.
