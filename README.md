@@ -1,8 +1,5 @@
 # Signal Sampling and Reconstruction — Custom PCB
 
-**EEE 310 Communication Laboratory | BUET | 2024**  
-**My contribution:** PCB design, hardware implementation, equipment procurement, cost management, and report writing.  
-**Project type:** Seven-member team laboratory project.
 
 ![Fabricated and assembled sampling PCB](images/pcb.jpg)
 
@@ -65,4 +62,3 @@ signal-sampling-reconstruction-pcb/
     └── signal.jpg              # Oscilloscope demonstration
 ```
 
-> **Note:** The supplied images document the design and tests. Native Altium project files are not included because they were not provided. The original group report is also not included to avoid publishing classmates' student IDs and signatures without review.
