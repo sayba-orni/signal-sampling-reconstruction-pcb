@@ -33,13 +33,13 @@ The images below include a second uploaded PCB render of the same design:
 3. **Reconstruction:** A two-stage passive RC low-pass network, using **220 Ω** resistors and **1 µF** capacitors in the reported design.
 4. **Instrumentation:** Test connections for clock, sampled outputs, and reconstructed output, along with selectable supply/bias arrangements.
 
-The project report notes that the MOSFET flat-top implementation distorted the negative portion of the signal, motivating the LF398-based PCB implementation.
+The MOSFET flat-top implementation distorted the negative portion of the signal, motivating the LF398-based PCB implementation.
 
 ## Experimental demonstration
 
 ![Oscilloscope measurement](images/signal.jpg)
 
-In the team's laboratory report, a **1.0178 kHz** sinusoidal input and approximately **1.021 kHz** reconstructed output were recorded. The report describes the PCB implementation as providing more stable sampled waveforms than the breadboard implementation. These are **reported laboratory observations**, not a new independent characterization.
+ A **1.0178 kHz** sinusoidal input and approximately **1.021 kHz** reconstructed output were recorded. The PCB implementation provided more stable sampled waveforms than the breadboard implementation. 
 
 ## Tools and topics
 
