@@ -39,7 +39,7 @@ The MOSFET flat-top implementation distorted the negative portion of the signal,
 
 ![Oscilloscope measurement](images/signal.jpg)
 
- A **1.0178 kHz** sinusoidal input and approximately **1.021 kHz** reconstructed output were recorded. The PCB implementation provided more stable sampled waveforms than the breadboard implementation. 
+ The PCB implementation provided more stable sampled waveforms than the breadboard implementation. 
 
 ## Tools and topics
 
