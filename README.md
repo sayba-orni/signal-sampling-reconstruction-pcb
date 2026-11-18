@@ -22,7 +22,7 @@ The PCB integrates a **555 timer clock generator**, **LF398 sampling ICs**, a **
 
 ![Circuit schematic](images/sampler_schematc.jpg)
 
-The images below include a second uploaded PCB render of the same design:
+
 
 ![Additional board view](images/samplerschematic.jpg)
 
