@@ -1,90 +1,68 @@
-# UAV-Based Vegetation Stress Mapping and Tea Leaf Disease Analysis
+# Signal Sampling and Reconstruction — Custom PCB
 
-EEE 404 Robotics and Automation Laboratory — group project, BUET.
+**EEE 310 Communication Laboratory | BUET | 2024**  
+**My contribution:** PCB design, hardware implementation, equipment procurement, cost management, and report writing.  
+**Project type:** Seven-member team laboratory project.
 
-This repository brings together **three complementary components** of a UAV-based tea-garden monitoring concept: RGB vegetation-index analysis from UAV imagery, SegFormer-based disease-region segmentation, and ResNet50-based image-level tea-leaf disease classification. The experiments were developed as components of the same group project; **the code does not demonstrate a fully autonomous, end-to-end flight-to-diagnosis deployment**.
+![Fabricated and assembled sampling PCB](images/pcb.jpg)
 
-![Group-built UAV during flight testing](images/drone-flight-photo.png)
+## Overview
 
-## Project components
+This project demonstrates **natural sampling**, **flat-top sampling**, and **analog signal reconstruction**. Our team explored MOSFET-based sampling on breadboards and an LF398 sample-and-hold approach on a custom PCB. I designed the PCB in **Altium Designer** and contributed to its hardware implementation.
 
-| Component | Method | What it produces | Implementation |
-|---|---|---|---|
-| UAV RGB vegetation analysis | Excess Green (ExG), VARI, low-index visualization | RGB comparisons, heatmaps, illustrative maps | [`notebooks/vegetation_mapping.ipynb`](notebooks/vegetation_mapping.ipynb), [`scripts/vegetation_mapping.py`](scripts/vegetation_mapping.py) |
-| Disease-region segmentation | SegFormer-B0, four classes including background | Pixel-level masks and lesion overlays | [`notebooks/segformer_tea_leaf_segmentation.ipynb`](notebooks/segformer_tea_leaf_segmentation.ipynb) |
-| Tea-leaf disease classification | ImageNet-pretrained ResNet50, seven classes | Image-level disease labels | [`notebooks/resnet50_tea_leaf_classification.ipynb`](notebooks/resnet50_tea_leaf_classification.ipynb) |
+The PCB integrates a **555 timer clock generator**, **LF398 sampling ICs**, a **passive low-pass reconstruction filter**, and connectors/switches for choosing clock and DC-bias sources. Outputs are exposed for oscilloscope inspection.
 
-## UAV imagery and vegetation-index mapping
+## PCB design and implementation
 
-The UAV video-processing workflow extracts RGB frames and computes ExG = 2G − R − B and VARI = (G − R)/(G + R − B), with appropriate numerical safeguards in the cleaned code. Low vegetation-index values identify **potential areas for closer inspection**, not clinically or agronomically verified plant disease.
+| Fabricated PCB | 3D PCB layout |
+|---|---|
+| ![Assembled PCB](images/pcb.jpg) | ![Altium 3D layout](images/sampler_pcb.jpg) |
 
-![RGB imagery compared with ExG and VARI maps](images/exg-vari-comparison.png)
+### Schematic
 
-![Examples of extracted video frames](images/extracted-frames.png)
+![Circuit schematic](images/sampler_schematc.jpg)
 
-The original mapping experiment used **synthetic pseudo-GPS coordinates** for a simulated serpentine flight path. The following 3D map is an illustrative visualization, **not** a GPS-validated georeferenced orthomosaic or a measured 3D terrain reconstruction.
+The images below include a second uploaded PCB render of the same design:
 
-![Illustrative 3D mapping visualization](images/3d-mapping.png)
+![Additional board view](images/samplerschematic.jpg)
 
-## SegFormer — pixel-level disease segmentation
+## Circuit blocks
 
-The uploaded training code uses the pretrained **`nvidia/segformer-b0-finetuned-ade-512-512`** checkpoint and predicts four classes: background, algal leaf spot, brown blight, and grey blight. Its configuration is 512×512 images, batch size 4, up to 25 epochs, learning rate 2e-5, and AdamW. It selects the best checkpoint by validation mean Dice and saves predicted masks and overlays.
+1. **Clock generation:** 555 timer in astable mode, with an approximately **13.875 kHz** design frequency according to the project report. An external lab clock can also be selected.
+2. **Sampling:** LF398 sample-and-hold ICs used to demonstrate natural and flat-top sampling; the team also evaluated MOSFET-based sampling on breadboards.
+3. **Reconstruction:** A two-stage passive RC low-pass network, using **220 Ω** resistors and **1 µF** capacitors in the reported design.
+4. **Instrumentation:** Test connections for clock, sampled outputs, and reconstructed output, along with selectable supply/bias arrangements.
 
-![SegFormer predicted disease masks and overlays from the group presentation](images/segformer-prediction-examples.png)
+The project report notes that the MOSFET flat-top implementation distorted the negative portion of the signal, motivating the LF398-based PCB implementation.
 
-The team presentation reports **97.7% pixel accuracy and 0.685 average Dice** for its SegFormer experiment. 
-## ResNet50 — image-level tea-leaf disease classification
+## Experimental demonstration
 
-The original Kaggle training code uses a TorchVision **ResNet50 pretrained on ImageNet**, replacing its final layer for the dataset's seven classes: tea algal leaf spot, brown blight, gray blight, helopeltis, red spider, green mirid bug, and healthy leaf. The dataset is **teaLeafBD**. The code implements a stratified 70/15/15 split, 224×224 inputs, batch size 32, class-weighted cross-entropy, AdamW (3e-4), cosine annealing, mixed precision, early stopping, and confusion-matrix evaluation.
+![Oscilloscope measurement](images/signal.jpg)
 
-The team report gives **93.18% test accuracy** and **0.9309 weighted F1** on its classification evaluation. These figures come from the report; the notebook was reorganized and syntax checked, **not rerun against the dataset here**. The SegFormer and ResNet50 metrics describe **different datasets and tasks** and are not directly comparable.
+In the team's laboratory report, a **1.0178 kHz** sinusoidal input and approximately **1.021 kHz** reconstructed output were recorded. The report describes the PCB implementation as providing more stable sampled waveforms than the breadboard implementation. These are **reported laboratory observations**, not a new independent characterization.
 
-## Flight documentation
+## Tools and topics
 
-![Group-built UAV hardware and electronics](images/drone-hardware.png)
+- **PCB design:** Altium Designer
+- **Analog electronics:** 555 timer, LF398 sample-and-hold ICs, RC low-pass filtering
+- **Signal processing:** Nyquist sampling criterion, natural sampling, flat-top sampling, reconstruction
+- **Validation:** Oscilloscope measurements and laboratory hardware tests
 
-![UAV flight photograph](images/drone-flight-photo.png)
+## My role and team credit
 
-- [UAV project video (compressed MP4)](videos/uav-project-video.mp4)
-- [Drone landing video (MP4)](videos/drone-landing.mp4)
-- [Additional drone flight video (MP4)](videos/drone-flight.mp4)
+I was responsible for **PCB design** and also contributed to **hardware implementation, purchasing equipment, cost management, and writing the report**. The circuit design, simulation, debugging, theoretical analysis, and other aspects of the complete laboratory project were collaborative work by the seven-member EEE 310 group at BUET (2024).
 
-## Repository structure
+## Repository contents
 
 ```text
-notebooks/
-  vegetation_mapping.ipynb
-  segformer_tea_leaf_segmentation.ipynb
-  resnet50_tea_leaf_classification.ipynb
-scripts/
-  vegetation_mapping.py
-images/
-  drone-hardware.png
-  drone-flight-photo.png
-  exg-vari-comparison.png
-  extracted-frames.png
-  3d-mapping.png
-  segformer-prediction-examples.png
-videos/
-  uav-project-video.mp4
-  drone-landing.mp4
-  drone-flight.mp4
-data/
-  .gitkeep
-README.md
-requirements.txt
-.gitignore
+signal-sampling-reconstruction-pcb/
+├── README.md
+└── images/
+    ├── pcb.jpg                 # Fabricated and assembled board
+    ├── sampler_pcb.jpg         # 3D PCB layout
+    ├── sampler_schematc.jpg    # Schematic
+    ├── samplerschematic.jpg    # Additional 3D board render
+    └── signal.jpg              # Oscilloscope demonstration
 ```
 
-## Running the code
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-python scripts/vegetation_mapping.py --help
-```
-
-For **SegFormer**, open its notebook and update the `ROOT` dataset path; the code expects `train/`, `valid/`, and `test/` directories with matching image and `<stem>_mask.png` files. For **ResNet50**, update `BASE_CANDIDATES` to point to the extracted teaLeafBD dataset. The notebooks may require adjustments for newer PyTorch/Transformers versions.
-
-**Reproducibility notes:** Original training datasets, checkpoints, and exact evaluation logs are not distributed here. Some figures are taken from the group's presentation. No claim is made that the proposed UAV revisit and automated diagnosis stages were tested as one integrated system. This was a group project; the presence of project media does not imply individual ownership of all UAV hardware work.
+> **Note:** The supplied images document the design and tests. Native Altium project files are not included because they were not provided. The original group report is also not included to avoid publishing classmates' student IDs and signatures without review.
